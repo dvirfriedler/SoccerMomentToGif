@@ -23,9 +23,9 @@ def main():
     audio, sample_rate = load_audio_file(audio_file_path)
     rms, rms_normalized = calc_rms_and_rms_normalized(audio)
     file_name = os.path.basename(audio_file_path)
-    multiplier=1.0
+    multiplier=1.3
     threshold = calculate_mad_threshold(rms_normalized, multiplier=multiplier)
-    min_interval_duration = 0.6
+    min_interval_duration = 1.0
 
     important_parts_from_audio = find_important_parts(sample_rate, rms, rms_normalized, threshold, min_interval_duration)
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
@@ -37,14 +37,14 @@ def main():
 
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
-    print(f"Merged Lists: {intervals_to_time_strings(important_parts)}\n")
 
     #create_gif_from_intervals(video_file_path, important_parts)
 
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
     #print(f"Merged Lists: {intervals_to_time_strings(important_parts)}\n")print(threshold)
-
+    
+    print(f"Merged Lists: {intervals_to_time_strings(important_parts)}\n")
     plot_rms_energy(file_name, rms_normalized, important_parts, 512, sample_rate,threshold,min_interval_duration, multiplier)
     print(f"Merged Lists: {intervals_to_time_strings(important_parts)}\n")
 
@@ -113,8 +113,8 @@ def plot_rms_energy(file_name, rms_normalized, important_parts, hop_length, samp
 
     plt.xlabel("Time (MM:SS)")
     plt.ylabel("Normalized RMS Energy")
-    plt.title(f"{file_name} + \n Normalized RMS Energy Over Time with Important Intervals \
-              (threshold = {str_threshold}, min_duration = {str_min_duration}, str_threshold_multiplier ={str_threshold_multiplier})")
+    plt.title(f"{file_name} + \n Normalized RMS Energy Over Time with Important Intervals \n"
+        + f"(threshold = {str_threshold}, min_duration = {str_min_duration}, str_threshold_multiplier ={str_threshold_multiplier})")
 
     # Format x-axis tick labels as MM:SS
     formatter = FuncFormatter(lambda seconds, _: seconds_to_mmss_string(seconds))
