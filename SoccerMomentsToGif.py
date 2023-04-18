@@ -38,7 +38,7 @@ def main():
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
 
-    #create_gif_from_intervals(video_file_path, important_parts)
+    create_gif_from_intervals(video_file_path, important_parts)
 
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
@@ -166,7 +166,7 @@ def calculate_mad_threshold(rms, multiplier=1.5):
 
     return threshold
 
-def create_gif_from_intervals(video_path, intervals, gif_duration=60):
+def create_gif_from_intervals(video_path, intervals, gif_duration=100):
     video = VideoFileClip(video_path)
 
     clips = []
@@ -194,7 +194,7 @@ def create_gif_from_intervals(video_path, intervals, gif_duration=60):
     gif_output_path = os.path.splitext(video_path)[0] + ".gif"
 
     # Save the GIF
-    gif.write_gif(gif_output_path, fps=15, program='imageio')  # Adjust the step value as needed
+    gif.write_gif(gif_output_path, fps=30, program='imageio')  # Adjust the step value as needed
 
 
 def seconds_to_mmss_string(seconds):
