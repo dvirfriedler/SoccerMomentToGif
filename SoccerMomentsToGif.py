@@ -38,7 +38,10 @@ def main():
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
 
-    create_gif_from_intervals(video_file_path, important_parts)
+    #create_gif_from_intervals(video_file_path, important_parts)
+    
+    create_video_from_intervals(video_file_path, important_parts)
+
 
     #print(f"Audio Intervals: {intervals_to_time_strings(important_parts_from_audio)}\n")
     #print(f"Speech recognition Intervals: {intervals_to_time_strings(important_parts_from_text)}\n")
@@ -51,7 +54,35 @@ def main():
     os.remove(audio_file_path)
 
 
+def create_video_from_intervals(video_path, intervals, video_duration=100):
+    video = VideoFileClip(video_path)
 
+    clips = []
+    for start_time, end_time in intervals:
+        clip = video.subclip(start_time, end_time)
+        clip = clip.resize(width=320)  # Adjust the width to your desired resolution
+        clips.append(clip)
+
+    if len(clips) == 0:
+        print("No clips found in the specified intervals. Exiting without creating a video.")
+        return
+
+    # Concatenate the clips
+    concatenated_clips = concatenate_videoclips(clips)
+
+    # Check if the total duration is less than the specified video_duration
+    total_duration = concatenated_clips.duration
+    if video_duration > total_duration:
+        video_duration = total_duration
+
+    # Create a short video from the concatenated clips
+    output_video = concatenated_clips.subclip(0, video_duration)
+
+    # Construct the output path for the video in the same folder as the input video
+    video_output_path = os.path.splitext(video_path)[0] + "_output.mp4"
+
+    # Save the video
+    output_video.write_videofile(video_output_path, codec='libx264', fps=24)  # Adjust the fps as needed
 
 
 def merged_interval_lists(list_from_audio, list_from_text):
